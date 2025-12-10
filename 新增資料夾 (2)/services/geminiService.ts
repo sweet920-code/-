@@ -7,8 +7,12 @@ export const analyzeScrapImage = async (base64Image: string): Promise<{ descript
   try {
     const model = 'gemini-2.5-flash';
     
-    // Clean base64 string if it contains the data URL prefix
-    const cleanBase64 = base64Image.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
+    // Extract mime type from base64 string, default to jpeg if not found
+    const mimeMatch = base64Image.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,/);
+    const mimeType = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+
+    // Clean base64 string by removing the data URL prefix
+    const cleanBase64 = base64Image.replace(/^data:image\/[a-zA-Z0-9+.-]+;base64,/, '');
 
     const response = await ai.models.generateContent({
       model: model,
@@ -16,7 +20,7 @@ export const analyzeScrapImage = async (base64Image: string): Promise<{ descript
         parts: [
           {
             inlineData: {
-              mimeType: 'image/jpeg',
+              mimeType: mimeType,
               data: cleanBase64
             }
           },
