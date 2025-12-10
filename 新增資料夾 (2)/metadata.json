@@ -1,8 +1,0 @@
-{
-  "name": "Sweet Spot Operations",
-  "description": "An intelligent operations log for recording scrap and defects with AI assistance.",
-  "requestFramePermissions": [
-    "camera",
-    "microphone"
-  ]
-}
